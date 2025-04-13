@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HospitalDataAnalytics(23BCE1926)</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: white ; }
+        table { width: 60%; margin: 20px auto; border-collapse: collapse; background: white; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+        th { background: blue; color: white; }
+        input, button { padding: 8px; margin: 5px; }
+        button { background: blue; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>Hospital Patient Data Analytics</h2>
+
+    <h3>Patient Data (Sorted by Age - Descending)</h3>
+    <table id="patientTable">
+        <thead><tr><th>P-Id</th><th>Name</th><th>Age</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <h3>Check if a Patient ID Exists</h3>
+    <input type="number" id="searchId" placeholder="Enter P-Id">
+    <button onclick="checkPatient()">Check</button>
+    <p id="checkResult"></p>
+
+    <h3>Filter Patients by Age</h3>
+    <input type="number" id="minAge" placeholder="Min Age">
+    <input type="number" id="maxAge" placeholder="Max Age">
+    <button onclick="filterPatients()">Filter</button>
+    <table id="filteredTable" style="display: none;">
+        <thead><tr><th>P-Id</th><th>Name</th><th>Age</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const patients = [
+            { P_Id: 1, Name: "Alen", Age: 39 },
+            { P_Id: 2, Name: "Deena", Age: 47 },
+            { P_Id: 3, Name: "Diana", Age: 21 },
+            { P_Id: 4, Name: "Jack", Age: 54 },
+            { P_Id: 5, Name: "Jain", Age: 23 },
+            { P_Id: 6, Name: "Kelvin", Age: 61 },
+            { P_Id: 7, Name: "Louis", Age: 69 },
+            { P_Id: 8, Name: "Rex", Age: 49 }
+        ];
+
+        const sortedPatients = patients.sort((a, b) => b.Age - a.Age);
+        function displayPatients(data, tableId) {
+            const tableBody = document.querySelector(`#${tableId} tbody`);
+            tableBody.innerHTML = data.map(p => `<tr><td>${p.P_Id}</td><td>${p.Name}</td><td>${p.Age}</td></tr>`).join('');
+        }
+        displayPatients(sortedPatients, "patientTable");
+
+        function checkPatient() {
+            const searchId = parseInt(document.getElementById("searchId").value);
+            document.getElementById("checkResult").innerText = patients.some(p => p.P_Id === searchId) ? `P-Id ${searchId} is present ✅` : `P-Id ${searchId} not found ❌`;
+        }
+
+        function filterPatients() {
+            const minAge = parseInt(document.getElementById("minAge").value);
+            const maxAge = parseInt(document.getElementById("maxAge").value);
+            const filtered = patients.filter(p => p.Age >= minAge && p.Age <= maxAge);
+            document.getElementById("filteredTable").style.display = filtered.length ? "table" : "none";
+            displayPatients(filtered, "filteredTable");
+        }
+    </script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMSelectMethods(23BCE1926)</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .input-field { padding: 8px; margin: 5px; border: 1px solid #ddd; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 5px; padding: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1 id="main-title">Original Title</h1>
+
+    <h2>Form Example</h2>
+    <label>Username: <input type="text" name="username" class="input-field"></label>
+    
+    <h3>Select Gender</h3>
+    <label><input type="radio" name="gender" value="Male"> Male</label>
+    <label><input type="radio" name="gender" value="Female"> Female</label>
+
+    <h3>Hobbies</h3>
+    <label><input type="checkbox" class="hobby" value="Reading"> Reading</label>
+    <label><input type="checkbox" class="hobby" value="Traveling"> Traveling</label>
+    <label><input type="checkbox" class="hobby" value="Gaming"> Gaming</label>
+
+    <h2>Paragraphs</h2>
+    <p class="info">Info paragraph 1</p>
+    <p class="info">Info paragraph 2</p>
+    <p>General paragraph</p>
+
+    <h2>List Items</h2>
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+
+    <script>
+        // (a) Using getElementById:
+        document.getElementById("main-title").textContent = "Updated Title";
+
+        // (b) Using getElementsByName:
+        document.getElementsByName("username")[0].value = "John Doe";
+        
+        let genderRadios = document.getElementsByName("gender");
+        for (let radio of genderRadios) {
+            if (radio.checked) {
+                console.log("Selected gender:", radio.value);
+            }
+        }
+
+        // (c) Using getElementsByTagName:
+        let paragraphs = document.getElementsByTagName("p");
+        console.log("Total <p> elements:", paragraphs.length);
+
+        let listItems = document.getElementsByTagName("li");
+        for (let item of listItems) {
+            console.log("List item:", item.textContent);
+        }
+
+        // (d) Using getElementsByClassName:
+        let inputFields = document.getElementsByClassName("input-field");
+        for (let field of inputFields) {
+            field.style.backgroundColor = "lightblue";
+        }
+
+        // (e) Using querySelector:
+        document.querySelector(".info").textContent = "This is the first info paragraph";
+        document.querySelector('input[name="gender"]').checked = true;
+
+        // (f) Using querySelectorAll:
+        let infoParagraphs = document.querySelectorAll(".info");
+        infoParagraphs.forEach(p => console.log("Info paragraph:", p.textContent));
+
+        let checkboxes = document.querySelectorAll(".hobby");
+        checkboxes.forEach(box => {
+            box.checked = true;
+            console.log("Checked hobby:", box.value);
+        });
+
+    </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroceryOrderForm(23BCE1926)</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #a5aa8b; }
+        .container { width: 40%; margin: auto; background: #808b6a; padding: 20px; border-radius: 10px; color: white; }
+        input, button { width: 80%; padding: 8px; margin: 10px; border-radius: 5px; border: none; }
+        .product { display: flex; align-items: center; justify-content: center; margin: 10px; }
+        img { width: 40px; margin-right: 10px; border-radius: 50%; }
+        button { background: #c49a6c; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Grocery Order Form</h2>
+        <label>Customer Name</label><br>
+        <input type="text" id="customerName"><br>
+
+        <label>Phone Number</label><br>
+        <input type="text" id="phone"><br>
+
+        <label>Email</label><br>
+        <input type="email" id="email"><br>
+
+        <h3>Products</h3>
+
+        <div class="product">
+            <input type="checkbox" class="product-check" value="Apple" data-price="10">
+            <img src="apple.jpg" alt="Apple">
+            Apple - $10/kg
+            <input type="number" class="product-qty" min="0" placeholder="kg">
+        </div>
+
+        <div class="product">
+            <input type="checkbox" class="product-check" value="Banana" data-price="5">
+            <img src="banana.jpg" alt="Banana">
+            Banana - $5/kg
+            <input type="number" class="product-qty" min="0" placeholder="kg">
+        </div>
+
+        <div class="product">
+            <input type="checkbox" class="product-check" value="Avocado" data-price="7">
+            <img src="avacado.jpg" alt="Avocado">
+            Avocado - $7/kg
+            <input type="number" class="product-qty" min="0" placeholder="kg">
+        </div>
+
+        <button onclick="submitOrder()">SUBMIT</button>
+    </div>
+
+    <script>
+        function submitOrder() {
+            const name = document.getElementById("customerName").value;
+            const phone = document.getElementById("phone").value;
+            const email = document.getElementById("email").value;
+
+            let order = { name, phone, email, items: [] };
+
+            document.querySelectorAll(".product-check").forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    const quantity = document.querySelectorAll(".product-qty")[index].value;
+                    if (quantity > 0) {
+                        order.items.push({
+                            product: checkbox.value,
+                            price: checkbox.getAttribute("data-price"),
+                            quantity
+                        });
+                    }
+                }
+            });
+
+            localStorage.setItem("orderData", JSON.stringify(order));
+            window.location.href = "receipt.html"; // Redirect to receipt page
+        }
+    </script>
+
+</body>
+</html>
